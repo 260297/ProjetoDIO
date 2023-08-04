@@ -1,0 +1,53 @@
+-- Criação das tabelas principais
+CREATE TABLE Cliente (
+    ID INT PRIMARY KEY,
+    Nome VARCHAR(100),
+    CPF_CNPJ VARCHAR(20),
+    Tipo VARCHAR(2) CHECK (Tipo IN ('PF', 'PJ'))
+);
+
+CREATE TABLE Pagamento (
+    ID INT PRIMARY KEY,
+    Cliente_ID INT,
+    Forma_Pagamento VARCHAR(50),
+    FOREIGN KEY (Cliente_ID) REFERENCES Cliente(ID)
+);
+
+CREATE TABLE Vendedor (
+    ID INT PRIMARY KEY,
+    Nome VARCHAR(100)
+);
+
+CREATE TABLE Produto (
+    ID INT PRIMARY KEY,
+    Nome VARCHAR(100),
+    Preco DECIMAL(10, 2),
+    Categoria VARCHAR(50)
+);
+
+CREATE TABLE Pedido (
+    ID INT PRIMARY KEY,
+    Cliente_ID INT,
+    Data DATE,
+    Status_Entrega VARCHAR(50),
+    Codigo_Rastreio VARCHAR(100),
+    FOREIGN KEY (Cliente_ID) REFERENCES Cliente(ID)
+);
+
+-- Criação das tabelas de relacionamento
+CREATE TABLE Fornecedor (
+    Vendedor_ID INT,
+    Produto_ID INT,
+    PRIMARY KEY (Vendedor_ID, Produto_ID),
+    FOREIGN KEY (Vendedor_ID) REFERENCES Vendedor(ID),
+    FOREIGN KEY (Produto_ID) REFERENCES Produto(ID)
+);
+
+CREATE TABLE Estoque (
+    Vendedor_ID INT,
+    Produto_ID INT,
+    Quantidade INT,
+    PRIMARY KEY (Vendedor_ID, Produto_ID),
+    FOREIGN KEY (Vendedor_ID) REFERENCES Vendedor(ID),
+    FOREIGN KEY (Produto_ID) REFERENCES Produto(ID)
+);
